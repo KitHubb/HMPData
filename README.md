@@ -13,7 +13,7 @@ devtools::install_github("KitHubb/HMPData")
 - source: https://qiita.ucsd.edu/study/description/1927
 - samples: 3,530
 - object: Phyloseq
-- Methods: QIIME2, DADA2, SILVA Database  
+- Methods: QIIME2(2024.02), DADA2(1.32.0), SILVA Database(138)
 
     
 `HMP35`
