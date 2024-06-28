@@ -21,7 +21,15 @@ samples: 6,346
 #### HMP13
 ```
 data('HMP13')
+HMP13
+# phyloseq-class experiment-level object
+# otu_table()   OTU Table:         [ 6237 taxa and 3530 samples ]
+# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
+# tax_table()   Taxonomy Table:    [ 6237 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 6237 tips and 6204 internal nodes ]
 ```
+
+
 #### HMP35(not yes)
 
 
