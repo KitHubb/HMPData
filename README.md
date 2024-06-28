@@ -45,7 +45,7 @@ prune_samples(sample_sums(HMP13)> 500, HMP13) # 6237 taxa and 304 samples
 prune_samples(sample_sums(HMP13)>1000, HMP13) # 6237 taxa and 130 samples
 prune_samples(sample_sums(HMP13)>2000, HMP13) # 6237 taxa and 49 samples
 ```
-
+너무 적은데???????????? 대체 뭐가 문제야...
 
 
 #### HMP35(not yes)
