@@ -12,12 +12,16 @@ devtools::install_github("KitHubb/HMPData")
 `HMP13`
 - source: https://qiita.ucsd.edu/study/description/1927
 - samples: 3,530
+- object: Phyloseq
+- Methods: QIIME2, DADA2, SILVA Database  
 
+    
 `HMP35`
 - source: https://qiita.ucsd.edu/study/description/1928
 - samples: 6,346
-
-
+- object: Phyloseq
+- Methods: QIIME2, DADA2, SILVA Database
+    
 ## Usage 
 #### HMP13
 ```
