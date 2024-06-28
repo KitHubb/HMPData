@@ -5,12 +5,18 @@ This package contains data analyzed using the DADA2 pipeline, derived from HMP d
 library(devtools)
 devtools::install_github("KitHubb/HMPData")
 ```
+
+
 ## Dataset
 `HMP13`
-- source: https://qiita.ucsd.edu/study/description/1927
-- 
+source: https://qiita.ucsd.edu/study/description/1927
+samples: 3,530
+
 `HMP35`
-- source: https://qiita.ucsd.edu/study/description/1928
+source: https://qiita.ucsd.edu/study/description/1928
+samples: 6,346
+
+
 ## Usage 
 #### HMP13
 ```
