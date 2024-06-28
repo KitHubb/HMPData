@@ -1,8 +1,8 @@
 Package: HMPData
 Title: Serve HMP data using DADA2 and SILVA database.
-Version: 2.0.0
+Version: 1.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+    person("So-Yeon", "Kim", , "kim.soyeon.bio@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: What the package does (one paragraph).
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
@@ -15,3 +15,5 @@ Imports:
 Depends: 
     R (>= 4.3)
 LazyData: true
+URL: https://github.com/KitHubb/HMPData
+BugReports: https://github.com/KitHubb/HMPData/issues
