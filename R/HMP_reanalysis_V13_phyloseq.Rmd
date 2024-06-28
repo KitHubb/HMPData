@@ -1,0 +1,310 @@
+---
+title: "HMP_reanalysis_V13_phyloseq"
+author: "kim soyeon"
+date: "2024-06-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# 1. impot qiime to phyloseq
+```{r}
+
+# if (!requireNamespace("devtools", quietly = TRUE)){install.packages("devtools")}
+# devtools::install_github("jbisanz/qiime2R")
+```
+
+```{r}
+library(qiime2R)
+library(phyloseq)
+library(stringr)
+library(dplyr)
+
+physeq<-qza_to_phyloseq(
+    features="../input_V1V3_qiime/table.qza",
+    tree="../input_V1V3_qiime/tree/rooted_tree.qza",
+    taxonomy="../input_V1V3_qiime/taxonomy.qza",
+    metadata = "../input_V1V3_qiime/1927_20230202-080822.txt"
+    )
+
+# phyloseq-class experiment-level object
+# otu_table()   OTU Table:         [ 6237 taxa and 3530 samples ]
+# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
+# tax_table()   Taxonomy Table:    [ 6237 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 6237 tips and 6204 internal nodes ]
+
+saveRDS(physeq, "../output/HMP_reanalysis_V1V3_phyloseq_SILVA138_20240628.rds")
+```
+
+
+# 2. Modify  taxonomy
+```{r}
+
+ps <- readRDS("../output/HMP_reanalysis_V1V3_phyloseq_SILVA138_20240628.rds")
+ps #  6237 taxa and 3530 samples
+
+```
+
+```{r}
+
+tax_clean <- function(TAX){ 
+  # remove k_
+  TAX.clean <- data.frame(row.names = row.names(TAX),
+                          Kingdom = str_replace(TAX[,1], "d__",""),
+                          Phylum = str_replace(TAX[,2], "p__",""),
+                          Class = str_replace(TAX[,3], "c__",""),
+                          Order = str_replace(TAX[,4], "o__",""),
+                          Family = str_replace(TAX[,5], "f__",""),
+                          Genus = str_replace(TAX[,6], "g__",""),
+                          Species = str_replace(TAX[,7], "s__",""),
+                          stringsAsFactors = FALSE)
+  # replace NA to "" and other things
+  TAX.clean[TAX.clean=="-"] <- ""
+  TAX.clean[is.na(TAX.clean)] <- ""
+  TAX.clean[TAX.clean == "NA"] <- ""
+  
+  # Spcies to Genus Species
+  tax.clean <- TAX.clean
+  
+  for (i in 1:nrow(tax.clean)){
+    if (tax.clean[i,7] != ""){
+      tax.clean$Species[i] <- paste(# tax.clean$Genus[i], 
+        tax.clean$Species[i]# , sep = " "
+        )
+    } else if (tax.clean[i,2] == ""){
+      kingdom <- paste(tax.clean[i,1], "unclassified",  sep = "_")
+      tax.clean[i, 2:7] <- kingdom
+    } else if (tax.clean[i,3] == ""){
+      phylum <- paste(tax.clean[i,2], "unclassified", sep = "_")
+      tax.clean[i, 3:7] <- phylum
+    } else if (tax.clean[i,4] == ""){
+      class <- paste(tax.clean[i,3], "unclassified", sep = "_")
+      tax.clean[i, 4:7] <- class
+    } else if (tax.clean[i,5] == ""){
+      order <- paste(tax.clean[i,4], "unclassified", sep = "_")
+      tax.clean[i, 5:7] <- order
+    } else if (tax.clean[i,6] == ""){
+      family <- paste(tax.clean[i,5], "unclassified",  sep = "_")
+      tax.clean[i, 6:7] <- family
+    } else if (tax.clean[i,7] == ""){
+      tax.clean$Species[i] <- paste(tax.clean$Genus[i], "unclassified", sep = "_")
+    }
+  }
+
+  tax.clean$Species <- gsub("*_sp.", "_unclassified", tax.clean$Species)
+  
+  tax.clean[tax.clean$Species %in% "uncultured_bacterium", "Species"] <- NA
+  tax.clean[grepl("uncultured_", tax.clean$Species), "Species"] <- NA
+  tax.clean[is.na(tax.clean)] <- ""
+  
+    tax.clean2 <- tax.clean
+  
+  for (i in 1:nrow(tax.clean2)){
+    if (tax.clean2[i,7] != ""){
+      tax.clean2$Species[i] <- paste(# tax.clean2$Genus[i], 
+        tax.clean2$Species[i]# , sep = " "
+        )
+    } else if (tax.clean2[i,2] == ""){
+      kingdom <- paste(tax.clean2[i,1], "uncultured",  sep = "_")
+      tax.clean2[i, 2:7] <- kingdom
+    } else if (tax.clean2[i,3] == ""){
+      phylum <- paste(tax.clean2[i,2], "uncultured", sep = "_")
+      tax.clean2[i, 3:7] <- phylum
+    } else if (tax.clean2[i,4] == ""){
+      class <- paste(tax.clean2[i,3], "uncultured", sep = "_")
+      tax.clean2[i, 4:7] <- class
+    } else if (tax.clean2[i,5] == ""){
+      order <- paste(tax.clean2[i,4], "uncultured", sep = "_")
+      tax.clean2[i, 5:7] <- order
+    } else if (tax.clean2[i,6] == ""){
+      family <- paste(tax.clean2[i,5], "uncultured",  sep = "_")
+      tax.clean2[i, 6:7] <- family
+    } else if (tax.clean2[i,7] == ""){
+      tax.clean2$Species[i] <- paste(tax.clean2$Genus[i], "uncultured", sep = "_")
+    }
+  }
+    
+      return(tax.clean2)
+
+}
+```
+
+```{r}
+tax <- data.frame(tax_table(ps))
+tax_clean <- tax_clean(tax)
+print(tax_clean)
+```
+
+#### import blast result
+```{r}
+
+blast_arrange <- function( blast_output, ASV) {
+
+  table <- data.frame(
+    `ASV` = blast_output[, ASV],
+    `Before` = blast_output$sscinames,
+    `Genus`  = NA,
+    `Species` = NA,
+    `Genus_Species` = NA
+  )
+
+
+  Clear_Species <- function(data) {
+    Sp <- strsplit(data, " ")[[1]]          # 문자열 분할
+    Genus <- Sp[1]
+    Species <- Sp[2]
+    G_S   <- paste(Sp[1], Sp[2], sep = "_") # 첫 번째 및 두 번째 단어 출력
+
+    return(c(Genus, Species, G_S ))
+  }
+
+  for (i in blast_output$sscinames ) {
+    table[table$Before == i, "Genus"] <- Clear_Species(i)[1]
+    table[table$Before == i, "Species"] <-Clear_Species(i)[2]
+    table[table$Before == i, "Genus_Species"] <- Clear_Species(i)[3]
+   }
+  return(table)
+}
+
+
+```
+
+
+```{r}
+
+
+blast_top1 <- read.csv("../input_V1V3_qiime/HMPv13_blast_top1_summary.csv", header = F, sep= ',')
+colnames(blast_top1) <- c(	"ASV",	"sacc",	"evalue",	"bitscore",	"qcovus",	"pident", "sscinames")
+dim(blast_top1) # 6465    7
+
+blast_top5 <- read.csv("../input_V1V3_qiime/HMPv13_blast_top5_summary.csv", header = F, sep= ',')
+colnames(blast_top5) <- c(	"ASV",	"sacc",	"evalue",	"bitscore",	"qcovus",	"pident", "sscinames")
+
+blast_top1.filt <- blast_top1 %>% dplyr::filter(evalue< 1e-10 &qcovus> 99 & pident>98.75) 
+dim(blast_top1.filt)  # 206 7 
+
+blast_top5.filt <- blast_top5 %>% dplyr::filter(evalue< 1e-10 &qcovus> 99 & pident>98.75) 
+blast_top5.filt
+
+blast_top1[grepl("Lawsonella", blast_top1$sscinames), ]
+blast_top1.filt$sscinames<- str_replace_all( blast_top1.filt$sscinames, "\\[", "")
+blast_top1.filt$sscinames<- str_replace_all( blast_top1.filt$sscinames, "\\]", "")
+blast_top1.filt$sscinames<- str_replace_all( blast_top1.filt$sscinames, "\\'", "")
+
+write.csv(blast_top1.filt, "../output/HMPv13_blast_top1_summary_filtered.csv")
+
+
+```
+
+Top1_blast 파일 전처리 
+```{r}
+rownames(blast_top1.filt) <- blast_top1.filt$ASV
+blast.out <- blast_arrange(blast_top1.filt, "ASV")
+blast.out
+```
+
+## comparison between origin and blast results
+```{r}
+
+# 기존 tax  output과 같은 서열의 데이터 뽑아내기
+original <- tax_clean[blast.out$ASV, ] # 231
+blast.out2 <-blast.out %>% tibble::column_to_rownames("ASV")
+blast.out2
+```
+
+
+```{r}
+merge_df <- merge(original, blast.out2, by = "row.names")
+merge_df
+
+
+merge_df$Same <- NA
+
+# sample Only Genus
+merge_df$Same <- replace(merge_df$Same,
+                         which(merge_df$Genus.y == merge_df$Genus.x &
+                               merge_df$Species.y != merge_df$Species.x), "G")
+
+# No same Genus but no Original Genus == NA
+merge_df$Same <- replace(merge_df$Same,
+                         which(merge_df$Genus.y != merge_df$Genus.x # & merge_df$Genus != "Bacteria Unclassified" )
+                               ), "G_x")
+
+merge_df$Same <- replace(merge_df$Same,
+                         which(merge_df$Genus.y != merge_df$Genus.x &
+                               merge_df$Genus.x == "Bacteria Unclassified" ), "B_Un")
+
+merge_df$Same <- replace(merge_df$Same,
+                         which(merge_df$Genus.y == merge_df$Genus.x &
+                               merge_df$Genus_Species == merge_df$Species.x), "S")
+
+
+merge_df$Same %>% table # 1324
+ #  G G_x   S 
+ # 72   6 153
+
+
+# Check
+merge_df[merge_df$Same == "G", c("Species.x", "Genus_Species", "Same")]
+merge_df[merge_df$Same == "G"&grepl("unclassified", merge_df$Species.x), c("Species.x", "Genus_Species", "Same")] # 32
+merge_df[merge_df$Same == "G"&!grepl("unclassified", merge_df$Species.x), c("Species.x", "Genus_Species", "Same")] # 40
+
+
+merge_df[merge_df$Same == "G_x", c("Genus.x", "Species.x", "Genus_Species")]
+
+
+blast_unclassified <- merge_df[merge_df$Same == "G"&grepl("unclassified", merge_df$Species.x),c(1:7, 12)] # 32
+colnames(blast_unclassified)[8] <- "Species"
+colnames(blast_unclassified)[7] <- "Genus"
+rownames(blast_unclassified) <- NULL
+blast_unclassified <- blast_unclassified %>% tibble::column_to_rownames("Row.names")
+```
+
+```{r}
+
+
+
+dim(tax_clean) # 6237    7
+
+
+
+`%notin%` <- Negate(`%in%`)
+tax_minus_blast <- tax_clean[rownames(tax_clean) %notin% rownames(blast_unclassified), c(1:7)]
+tax_minus_blast # 6,205 × 7
+
+tax_modi <- rbind(tax_minus_blast,blast_unclassified)
+
+
+ps.blast <- ps
+
+tax_table(ps.blast)  <- tax_table(as.matrix(tax_modi))
+ps.blast
+# phyloseq-class experiment-level object
+# otu_table()   OTU Table:         [ 6237 taxa and 3530 samples ]
+# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
+# tax_table()   Taxonomy Table:    [ 6237 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 6237 tips and 6204 internal nodes ]
+
+# saveRDS(ps.blast, "./output/HMP_reanalysis_V1V3_phyloseq_SILVA138_20240628_blast.rds")
+ps.blast
+
+tax_afblast <- tax_table(ps.blast) %>% data.frame()
+grepl("unclassified", tax_afblast$Species) %>% table
+# FALSE  TRUE 
+#  4003  2234 
+ 
+grepl("uncultured", tax_afblast$Species) %>% table
+# FALSE  TRUE 
+#  4776  1461
+
+```
+
+```{r}
+# saveRDS(ps.blast, "./output/HMP_reanalysis_V1V3_phyloseq_SILVA138_20240628_blast.rds")
+HMP13 <- ps.blast
+usethis::use_data(HMP13)
+
+```
