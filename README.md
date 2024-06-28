@@ -23,3 +23,20 @@ samples: 6,346
 data('HMP13')
 ```
 #### HMP35(not yes)
+
+
+## Preprocessing
+#### 1) Demultiplexing
+```
+
+```
+#### 2) Analysis in QIIME2 Env
+
+```
+
+
+```
+#### 3) QIIME2 to Phyloseq object
+
+#### 4) BLAST sequences
+
