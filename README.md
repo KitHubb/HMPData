@@ -40,20 +40,22 @@ HMP13
 ## Comparison 
 
 ## Preprocessing
-#### 1) Demultiplexing
-```
-conda activate qiime2-amplicon-2024.03
 
-```
+
+#### 1) Demultiplexing
+rearrange mapping file
+- In the V1V3 dataset, there are 10 multiplexed groups in 3,530 samples
+- mapping file save in `/QIIME_preprocessing/Mapping_files/`
 
 change `.fna` to `.fasta`
 ```
 for file in *.fna; do # using root
     cp -- "$file" "${file%.fna}.fasta"
 done 
-
 ```
-Make function for demultiplexing
+
+Make bash script for demultiplexing using QIIME2
+- script file save in `/QIIME_preprocessing/script/`
 ```
 #!/bin/bash
 
@@ -111,25 +113,29 @@ for multi in $list; do
   cd ..
 
 done
-
 ```
 
 Run script
 ```
 chmod +x process_qiime.sh
-./process_qiime.sh SRR058107 SRR058107  ...
+./process_qiime.sh SRR045723 SRR047558 SRR057663 SRR058087 SRR058088 SRR058091 SRR058094 SRR058097 SRR058107 SRR058115
 ```
 
 #### 2) Analysis in QIIME2 Env
-import qiime2 artifect
+import demultiplexed `fastq.gz` files to qiime2 artifact
+- manifest file save in `/QIIME_preprocessing/`
+
+```
+conda activate qiime2-amplicon-2024.02
+```
+
+
 ```
 qiime tools import   \
 --type 'SampleData[SequencesWithQuality]'   \
 --input-path ./mapping_files/HMPV13_qiime2_manifest_total.txt   \
 --output-path single-end-demux.qza   \
 --input-format SingleEndFastqManifestPhred33V2 
-
-
 ```
 
 Adapter trimming
@@ -142,6 +148,7 @@ qiime cutadapt trim-single \
   --o-trimmed-sequences single-end-trimmed.qza \
   --verbose
 ```
+
 Denoising
 ```
 qiime dada2 denoise-pyro \
