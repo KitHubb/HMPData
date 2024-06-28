@@ -12,12 +12,12 @@ devtools::install_github("KitHubb/HMPData")
 
 ## Dataset
 `HMP13`
-source: https://qiita.ucsd.edu/study/description/1927
-samples: 3,530
+- source: https://qiita.ucsd.edu/study/description/1927
+- samples: 3,530
 
 `HMP35`
-source: https://qiita.ucsd.edu/study/description/1928
-samples: 6,346
+- source: https://qiita.ucsd.edu/study/description/1928
+- samples: 6,346
 
 
 ## Usage 
@@ -42,20 +42,73 @@ HMP13
 ## Preprocessing
 
 
-#### 1) Demultiplexing
-rearrange mapping file
+
+#### 1) Prepare dataset
+
+(1) rearrange mapping file
 - In the V1V3 dataset, there are 10 multiplexed groups in 3,530 samples
 - mapping file save in `/QIIME_preprocessing/Mapping_files/`
 
-change `.fna` to `.fasta`
+(2) change `.fna` to `.fasta`
 ```
 for file in *.fna; do # using root
     cp -- "$file" "${file%.fna}.fasta"
 done 
 ```
 
+(3) Merge `.fna` + `.qual` to `.fastq`
+```
+# instapp biopython
+python -m pip install --upgrade pip
+pip install biopython
+pip install biopython –-upgrade
+
+```
+
+reference: https://gist.github.com/necrolyte2/b45a82fb4ecb0ffd70ab#file-fastaqual_too_fastq-py-L1
+
+```
+#!/usr/bin/env python
+
+import sys
+
+from Bio import SeqIO
+from Bio.SeqIO.QualityIO import PairedFastaQualIterator
+
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('fasta', help='Fasta file')
+parser.add_argument('qual', help='Qual file')
+args = parser.parse_args()
+
+records = PairedFastaQualIterator(
+    open(args.fasta),
+    open(args.qual)
+)
+for rec in records:
+    sys.stdout.write(rec.format('fastq'))
+```
+
+```
+chmod +x fastaqual_too_fastq.py
+
+for file in $(ls | sed -E 's/\.[^/.]+$//' | sort | uniq); do  ../fastaqual_too_fastq.py \
+./${file}.fna ./${file}.qual >  ../FASTQ/${file}.fastq ; done
+
+```
+
+check the number of samples
+```
+ls -al | grep ^- | wc -l
+```
+
+
+#### 2) Demultiplexing
 Make bash script for demultiplexing using QIIME2
+
 - script file save in `/QIIME_preprocessing/script/`
+- reference: https://forum.qiime2.org/t/analyzing-454-data-in-qiime-2/25055
 ```
 #!/bin/bash
 
@@ -121,7 +174,7 @@ chmod +x process_qiime.sh
 ./process_qiime.sh SRR045723 SRR047558 SRR057663 SRR058087 SRR058088 SRR058091 SRR058094 SRR058097 SRR058107 SRR058115
 ```
 
-#### 2) Analysis in QIIME2 Env
+#### 3) Analysis in QIIME2 Env
 import demultiplexed `fastq.gz` files to qiime2 artifact
 - manifest file save in `/QIIME_preprocessing/`
 
@@ -171,7 +224,7 @@ qiime phylogeny align-to-tree-mafft-fasttree \
 
 ```
 
-#### 3) QIIME2 to Phyloseq object
+#### 4) QIIME2 to Phyloseq object
 
 
 #### 4) BLAST sequences
