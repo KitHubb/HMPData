@@ -21,6 +21,9 @@ devtools::install_github("KitHubb/HMPData")
 ## Usage 
 #### HMP13
 ```
+library(phyloseq)
+library(HMPData)
+
 data('HMP13')
 HMP13
 # phyloseq-class experiment-level object
@@ -28,7 +31,17 @@ HMP13
 # sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
 # tax_table()   Taxonomy Table:    [ 6237 taxa by 7 taxonomic ranks ]
 # phy_tree()    Phylogenetic Tree: [ 6237 tips and 6204 internal nodes ]
+
+summary(sample_sums(HMP13))
+#   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#    0.0     1.0    21.0   179.6   159.0  7155.0
+
+prune_samples(sample_sums(HMP13)>   0, HMP13) # 6237 taxa and 2903 samples
+prune_samples(sample_sums(HMP13)> 500, HMP13) # 6237 taxa and 304 samples
+prune_samples(sample_sums(HMP13)>1000, HMP13) # 6237 taxa and 130 samples
+prune_samples(sample_sums(HMP13)>2000, HMP13) # 6237 taxa and 49 samples
 ```
+
 
 
 #### HMP35(not yes)
