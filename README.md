@@ -36,6 +36,9 @@ HMP13
 #### HMP35(not yes)
 
 
+
+## Comparison 
+
 ## Preprocessing
 #### 1) Demultiplexing
 ```
@@ -43,6 +46,13 @@ conda activate qiime2-amplicon-2024.03
 
 ```
 
+change `.fna` to `.fasta`
+```
+for file in *.fna; do # using root
+    cp -- "$file" "${file%.fna}.fasta"
+done 
+
+```
 Make function for demultiplexing
 ```
 #!/bin/bash
