@@ -327,8 +327,3 @@ Modify taxonomy format
 - `NA`, `_sp.` to `_unclassified`
 - "uncultured" to "Genus_uncultured"  
 - filtering Unassigned, Chloroplast, Mitochondria, Archaea
-- 
-#### 4) BLAST sequences (Not yet)
-- Cut off: evalue< 1e-10, qcovus> 99,  pident> 98.75
-- Exchange unclassified species as BLAST results
-
