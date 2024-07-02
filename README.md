@@ -16,20 +16,25 @@ devtools::install_github("KitHubb/HMPData")
 - Methods: QIIME2(2024.02), DADA2(1.32.0), SILVA Database(138)
 
     
-2. HMP35`
+2. HMP35
 - source: https://qiita.ucsd.edu/study/description/1928
 - samples: 6,346
 - object: Phyloseq
 - Methods: QIIME2, DADA2, SILVA Database
     
 ## output data
-1. HMP13
-`V13p5`
+1. `V13p5`
 - Using dada2-pyro
-- truncate read length from 500, remove forward 20
-
-- `V13p5`
-2. HMP35
+- Truncate the read length to 500 and remove 20 bp from the forward
+2. `V13p4`
+- Using dada2-pyro
+- Truncate the read length to 450 and remove 20 bp from the forward
+3. `V13s5`
+- Using dada2-single
+- Truncate the read length to 500 and remove 20 bp from the forward
+4. `V13s4`
+- Using dada2-single
+- Truncate the read length to 450 and remove 20 bp from the forward
 
   
 ## Usage
