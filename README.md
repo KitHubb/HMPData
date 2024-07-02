@@ -303,22 +303,22 @@ ps
 # sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
 # tax_table()   Taxonomy Table:    [ 6237 taxa by 7 taxonomic ranks ]
 # phy_tree()    Phylogenetic Tree: [ 6237 tips and 6204 internal nodes ]
-
 ```
 
 #### 5) Modify taxonomy 
 - Reference: https://www.yanh.org/2021/01/01/microbiome-r/
-- filtering Unassigned, Chloroplast, Mitochondria, Archaea
+
+Filtering Unassigned, Chloroplast, Mitochondria, Archaea
 ```
 physeq <- subset_taxa(physeq, Kingdom %in% "Bacteria" ) 
 physeq <- subset_taxa(physeq, Order %!in%  "Chloroplast" ) 
 physeq <- subset_taxa(physeq, Family %!in%  "Mitochondria") 
-
 ```
-- `NA`, `_sp.` to `_unclassified`
+    
+Modify taxonomy format
+- "NA", "_sp." to "_unclassified"
 - "uncultured" to "Genus_uncultured"  
 ```
-
 tax_clean <- function(TAX){ 
   # remove k_
   TAX.clean <- data.frame(row.names = row.names(TAX),
@@ -397,9 +397,8 @@ tax_clean <- function(TAX){
       return(tax.clean2)
 }
 
-```
 
-```{r}
+
 tax <- data.frame(tax_table(physeq))
 tax.c <- tax_clean(tax)
 tax_table(physeq) <- tax_table(as.matrix(tax.c))
