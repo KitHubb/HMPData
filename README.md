@@ -47,31 +47,31 @@ data(‘V13s4’) # dada2-single, trunc-length 450
 ```
 V13p5
 # phyloseq-class experiment-level object
-# otu_table()   OTU Table:         [ 52512 taxa and 3530 samples ]
+# otu_table()   OTU Table:         [ 52283 taxa and 3530 samples ]
 # sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
-# tax_table()   Taxonomy Table:    [ 52512 taxa by 7 taxonomic ranks ]
-# phy_tree()    Phylogenetic Tree: [ 52512 tips and 51961 internal nodes ]
+# tax_table()   Taxonomy Table:    [ 52283 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 52283 tips and 51732 internal nodes ]
 
 V13p4
 # phyloseq-class experiment-level object
-# otu_table()   OTU Table:         [ 26053 taxa and 3530 samples ]
+# otu_table()   OTU Table:         [ 26035 taxa and 3530 samples ]
 # sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
-# tax_table()   Taxonomy Table:    [ 26053 taxa by 7 taxonomic ranks ]
-# phy_tree()    Phylogenetic Tree: [ 26053 tips and 25792 internal nodes ]
+# tax_table()   Taxonomy Table:    [ 26035 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 26035 tips and 25774 internal nodes ]
 
 V13s5
 # phyloseq-class experiment-level object
-# otu_table()   OTU Table:         [ 26773 taxa and 3530 samples ]
+# otu_table()   OTU Table:         [ 26754 taxa and 3530 samples ]
 # sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
-# tax_table()   Taxonomy Table:    [ 26773 taxa by 7 taxonomic ranks ]
-# phy_tree()    Phylogenetic Tree: [ 26773 tips and 26631 internal nodes ]
+# tax_table()   Taxonomy Table:    [ 26754 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 26754 tips and 26612 internal nodes ]
 
 V13s4
 # phyloseq-class experiment-level object
-# otu_table()   OTU Table:         [ 53991 taxa and 3530 samples ]
+# otu_table()   OTU Table:         [ 53762 taxa and 3530 samples ]
 # sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
-# tax_table()   Taxonomy Table:    [ 53991 taxa by 7 taxonomic ranks ]
-# phy_tree()    Phylogenetic Tree: [ 53991 tips and 53302 internal nodes ]
+# tax_table()   Taxonomy Table:    [ 53762 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 53762 tips and 53073 internal nodes ]
 
 
 ```
@@ -81,38 +81,21 @@ V13s4
 
 ## Statistics
 ```
-summary(sample_sums(V13p4))
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-# 0.0   958.2  3600.0  3793.4  5343.8 70854.0
-
-table(is.na(tax_table(V13p4)[,"Species"]))
-# FALSE  TRUE
-# 26345 26167
-
 summary(sample_sums(V13p5))
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 # 0.0   101.0   916.5  1385.1  1945.8 29071.0
 
-table(is.na(tax_table(V13p5)[,"Species"]))
-# FALSE  TRUE
-# 15274 10779
-
-summary(sample_sums(V13s4))
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-# 0.0   942.2  3566.0  3755.0  5295.5 70327.0
-
-table(is.na(tax_table(V13s4)[,"Species"]))
-# FALSE  TRUE
-# 26991 27000
+summary(sample_sums(V13p4))
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.0   945.5  3578.0  3779.7  5330.8 70684.0 
 
 summary(sample_sums(V13s5))
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
-# 0.0   100.2   905.0  1362.8  1921.5 28891.0
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0.0   100.2   905.0  1362.7  1921.5 28891.0 
 
-table(is.na(tax_table(V13s4)[,"Species"]))
-# FALSE  TRUE 
-# 26991 27000
-
+summary(sample_sums(V13s4))
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# 0     933    3549    3742    5285   70158 
 ```
 
 ## Mathods
@@ -282,7 +265,8 @@ Denoising
 ```
 qiime dada2 denoise-pyro \
   --i-demultiplexed-seqs single-end-trimmed.qza \
-  --p-trunc-len 515 \
+  --p-trunc-len 500 \#500 or 400
+  --p-trim-left 20 \
   --output-dir dada2-out
 ```
   
@@ -322,8 +306,12 @@ ps
 
 ```
 
-Modify taxonomy format
-- reference: https://www.yanh.org/2021/01/01/microbiome-r/
+#### 5) Modify taxonomy 
+- Reference: https://www.yanh.org/2021/01/01/microbiome-r/
 - `NA`, `_sp.` to `_unclassified`
 - "uncultured" to "Genus_uncultured"  
 - filtering Unassigned, Chloroplast, Mitochondria, Archaea
+```
+
+
+```
