@@ -43,6 +43,12 @@ library(phyloseq)
 library(HMPData)
 
 data(‘V13p5’) # dada2 pyrosequencing, trunc-length 500
+data(‘V13p4’) # dada2 pyrosequencing, trunc-length 450
+data(‘V13s5’) # dada2 single, trunc-length 500
+data(‘V13s4’) # dada2 single, trunc-length 450
+```
+
+```
 V13p5
 # phyloseq-class experiment-level object
 # otu_table()   OTU Table:         [ 52512 taxa and 3530 samples ]
@@ -50,7 +56,6 @@ V13p5
 # tax_table()   Taxonomy Table:    [ 52512 taxa by 7 taxonomic ranks ]
 # phy_tree()    Phylogenetic Tree: [ 52512 tips and 51961 internal nodes ]
 
-data(‘V13p4’) # dada2 pyrosequencing, trunc-length 450
 V13p4
 # phyloseq-class experiment-level object
 # otu_table()   OTU Table:         [ 26053 taxa and 3530 samples ]
@@ -58,8 +63,6 @@ V13p4
 # tax_table()   Taxonomy Table:    [ 26053 taxa by 7 taxonomic ranks ]
 # phy_tree()    Phylogenetic Tree: [ 26053 tips and 25792 internal nodes ]
 
-
-data(‘V13s5’) # dada2 single, trunc-length 500
 V13s5
 # phyloseq-class experiment-level object
 # otu_table()   OTU Table:         [ 26773 taxa and 3530 samples ]
@@ -67,8 +70,6 @@ V13s5
 # tax_table()   Taxonomy Table:    [ 26773 taxa by 7 taxonomic ranks ]
 # phy_tree()    Phylogenetic Tree: [ 26773 tips and 26631 internal nodes ]
 
-
-data(‘V13s4’) # dada2 single, trunc-length 450
 V13s4
 # phyloseq-class experiment-level object
 # otu_table()   OTU Table:         [ 53991 taxa and 3530 samples ]
@@ -84,7 +85,33 @@ V13s4
 
 ## Statistics
 ```
+summary(sample_sums(V13p4))
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+# 0.0   958.2  3600.0  3793.4  5343.8 70854.0
+table(is.na(tax_table(V13p4)[,"Species"]))
+# FALSE  TRUE
+# 26345 26167
 
+summary(sample_sums(V13p5))
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+# 0.0   101.0   916.5  1385.1  1945.8 29071.0
+table(is.na(tax_table(V13p5)[,"Species"]))
+# FALSE  TRUE
+# 15274 10779
+
+summary(sample_sums(V13s4))
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+# 0.0   942.2  3566.0  3755.0  5295.5 70327.0
+table(is.na(tax_table(V13s4)[,"Species"]))
+# FALSE  TRUE
+# 26991 27000
+
+summary(sample_sums(V13s5))
+# Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+# 0.0   100.2   905.0  1362.8  1921.5 28891.0
+table(is.na(tax_table(V13s4)[,"Species"]))
+# FALSE  TRUE 
+# 26991 27000
 
 ```
 
