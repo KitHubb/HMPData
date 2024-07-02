@@ -42,15 +42,51 @@ devtools::install_github("KitHubb/HMPData")
 library(phyloseq)
 library(HMPData)
 
-data('V13p5')
-HMP13
+data(‘V13p5’) # dada2 pyrosequencing, trunc-length 500
+V13p5
+# phyloseq-class experiment-level object
+# otu_table()   OTU Table:         [ 52512 taxa and 3530 samples ]
+# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
+# tax_table()   Taxonomy Table:    [ 52512 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 52512 tips and 51961 internal nodes ]
+
+data(‘V13p4’) # dada2 pyrosequencing, trunc-length 450
+V13p4
+# phyloseq-class experiment-level object
+# otu_table()   OTU Table:         [ 26053 taxa and 3530 samples ]
+# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
+# tax_table()   Taxonomy Table:    [ 26053 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 26053 tips and 25792 internal nodes ]
+
+
+data(‘V13s5’) # dada2 single, trunc-length 500
+V13s5
+# phyloseq-class experiment-level object
+# otu_table()   OTU Table:         [ 26773 taxa and 3530 samples ]
+# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
+# tax_table()   Taxonomy Table:    [ 26773 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 26773 tips and 26631 internal nodes ]
+
+
+data(‘V13s4’) # dada2 single, trunc-length 450
+V13s4
+# phyloseq-class experiment-level object
+# otu_table()   OTU Table:         [ 53991 taxa and 3530 samples ]
+# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
+# tax_table()   Taxonomy Table:    [ 53991 taxa by 7 taxonomic ranks ]
+# phy_tree()    Phylogenetic Tree: [ 53991 tips and 53302 internal nodes ]
+
 
 ```
 
 #### HMP35(not yes)
 
 
+## Statistics
+```
 
+
+```
 
 
 ## Preprocessing
@@ -239,11 +275,12 @@ library(stringr)
 library(dplyr)
 
 physeq<-qza_to_phyloseq(
-    features="../input_V1V3_qiime/table.qza",
-    tree="../input_V1V3_qiime/tree/rooted_tree.qza",
-    taxonomy="../input_V1V3_qiime/taxonomy.qza",
+    features="../input_V1V3_qiime/pyro-500/table.qza",
+    tree="../input_V1V3_qiime/pyro-500/tree/rooted_tree.qza",
+    taxonomy="../input_V1V3_qiime/pyro-500/taxonomy.qza",
     metadata = "../input_V1V3_qiime/1927_20230202-080822.txt"
     )
+physeq
 # phyloseq-class experiment-level object
 # otu_table()   OTU Table:         [ 6237 taxa and 3530 samples ]
 # sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
