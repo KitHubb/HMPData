@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
+It is not real code..it's Basic code.
 
 ```{r}
 library(qiime2R)
@@ -27,7 +27,7 @@ library(dplyr)
 # devtools::install_github("jbisanz/qiime2R")
 ```
 
-Basic code
+
 ```{r}
 physeq <-qza_to_phyloseq(
     features="../Input_V1V3_qiime/table.qza",
