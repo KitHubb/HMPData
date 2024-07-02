@@ -9,45 +9,38 @@ devtools::install_github("KitHubb/HMPData")
   
   
 ## Dataset
-`HMP13`
+1. HMP13
 - source: https://qiita.ucsd.edu/study/description/1927
 - samples: 3,530
 - object: Phyloseq
 - Methods: QIIME2(2024.02), DADA2(1.32.0), SILVA Database(138)
 
     
-`HMP35`
+2. HMP35`
 - source: https://qiita.ucsd.edu/study/description/1928
 - samples: 6,346
 - object: Phyloseq
 - Methods: QIIME2, DADA2, SILVA Database
     
-## Usage 
-#### HMP13
+## output data
+1. HMP13
+`V13p5`
+- Using dada2-pyro
+- truncate read length from 500, remove forward 20
+
+- `V13p5`
+2. HMP35
+
+  
+## Usage
 ```
 library(phyloseq)
 library(HMPData)
 
-data('HMP13')
+data('V13p5')
 HMP13
-# phyloseq-class experiment-level object
-# otu_table()   OTU Table:         [ 6237 taxa and 3530 samples ]
-# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
-# tax_table()   Taxonomy Table:    [ 6237 taxa by 7 taxonomic ranks ]
-# phy_tree()    Phylogenetic Tree: [ 6237 tips and 6204 internal nodes ]
 
-summary(sample_sums(HMP13))
-#   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#    0.0     1.0    21.0   179.6   159.0  7155.0
 
-prune_samples(sample_sums(HMP13)>   0, HMP13) # 6237 taxa and 2903 samples
-prune_samples(sample_sums(HMP13)> 500, HMP13) # 6237 taxa and 304 samples
-prune_samples(sample_sums(HMP13)>1000, HMP13) # 6237 taxa and 130 samples
-prune_samples(sample_sums(HMP13)>2000, HMP13) # 6237 taxa and 49 samples
-```
-너무 적은데???????????? 대체 뭐가 문제야...
-1) dada2-pyro trunc-len 다르게
-2) dada2-single 비교
 
 #### HMP35(not yes)
 ```
