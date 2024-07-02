@@ -17,18 +17,19 @@ devtools::install_github("KitHubb/HMPData")
 - Source: https://qiita.ucsd.edu/study/description/1928
 - Samples: 6,346
 
+
 ## Dataset
 1. `V13p5`
-- Using dada2-pyro
+- Using dada2-pyro plugin
 - Truncate the read length to 500 and remove 20 bp from the forward
 2. `V13p4`
-- Using dada2-pyro
+- Using dada2-pyro plugin
 - Truncate the read length to 450 and remove 20 bp from the forward
 3. `V13s5`
-- Using dada2-single
+- Using dada2-single plugin
 - Truncate the read length to 500 and remove 20 bp from the forward
 4. `V13s4`
-- Using dada2-single
+- Using dada2-single plugin
 - Truncate the read length to 450 and remove 20 bp from the forward
 
   
@@ -37,10 +38,10 @@ devtools::install_github("KitHubb/HMPData")
 library(phyloseq)
 library(HMPData)
 
-data(‘V13p5’) # dada2 pyrosequencing, trunc-length 500
-data(‘V13p4’) # dada2 pyrosequencing, trunc-length 450
-data(‘V13s5’) # dada2 single, trunc-length 500
-data(‘V13s4’) # dada2 single, trunc-length 450
+data(‘V13p5’) # dada2-pyro, trunc-length 500
+data(‘V13p4’) # dada2-pyro, trunc-length 450
+data(‘V13s5’) # dada2-single, trunc-length 500
+data(‘V13s4’) # dada2-single, trunc-length 450
 ```
 
 ```
@@ -306,13 +307,13 @@ library(phyloseq)
 library(stringr)
 library(dplyr)
 
-physeq<-qza_to_phyloseq(
+ps<-qza_to_phyloseq(
     features="../input_V1V3_qiime/pyro-500/table.qza",
     tree="../input_V1V3_qiime/pyro-500/tree/rooted_tree.qza",
     taxonomy="../input_V1V3_qiime/pyro-500/taxonomy.qza",
     metadata = "../input_V1V3_qiime/1927_20230202-080822.txt"
     )
-physeq
+ps
 # phyloseq-class experiment-level object
 # otu_table()   OTU Table:         [ 6237 taxa and 3530 samples ]
 # sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
@@ -325,8 +326,9 @@ Modify taxonomy format
 - reference: https://www.yanh.org/2021/01/01/microbiome-r/
 - `NA`, `_sp.` to `_unclassified`
 - "uncultured" to "Genus_uncultured"  
-
-#### 4) BLAST sequences
+- filtering Unassigned, Chloroplast, Mitochondria, Archaea
+- 
+#### 4) BLAST sequences (Not yet)
 - Cut off: evalue< 1e-10, qcovus> 99,  pident> 98.75
-- Exchange 32 unclassified ASVs as BLAST results
+- Exchange unclassified species as BLAST results
 
