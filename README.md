@@ -22,7 +22,7 @@ devtools::install_github("KitHubb/HMPData")
 - object: Phyloseq
 - Methods: QIIME2, DADA2, SILVA Database
     
-## output data
+## Data
 1. `V13p5`
 - Using dada2-pyro
 - Truncate the read length to 500 and remove 20 bp from the forward
