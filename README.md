@@ -88,6 +88,7 @@ V13s4
 summary(sample_sums(V13p4))
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
 # 0.0   958.2  3600.0  3793.4  5343.8 70854.0
+
 table(is.na(tax_table(V13p4)[,"Species"]))
 # FALSE  TRUE
 # 26345 26167
@@ -95,6 +96,7 @@ table(is.na(tax_table(V13p4)[,"Species"]))
 summary(sample_sums(V13p5))
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
 # 0.0   101.0   916.5  1385.1  1945.8 29071.0
+
 table(is.na(tax_table(V13p5)[,"Species"]))
 # FALSE  TRUE
 # 15274 10779
@@ -102,6 +104,7 @@ table(is.na(tax_table(V13p5)[,"Species"]))
 summary(sample_sums(V13s4))
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
 # 0.0   942.2  3566.0  3755.0  5295.5 70327.0
+
 table(is.na(tax_table(V13s4)[,"Species"]))
 # FALSE  TRUE
 # 26991 27000
@@ -109,6 +112,7 @@ table(is.na(tax_table(V13s4)[,"Species"]))
 summary(sample_sums(V13s5))
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
 # 0.0   100.2   905.0  1362.8  1921.5 28891.0
+
 table(is.na(tax_table(V13s4)[,"Species"]))
 # FALSE  TRUE 
 # 26991 27000
