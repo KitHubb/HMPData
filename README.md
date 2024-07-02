@@ -102,7 +102,7 @@ summary(sample_sums(V13s4))
 - Tools
   - QIIME2(v2024.02)
   - DADA2(v1.32.0)
-  - phyloseq()
+  - phyloseq(v1.48.0)
   - SILVA Database(v138)
 
 ## Preprocessing
@@ -308,10 +308,99 @@ ps
 
 #### 5) Modify taxonomy 
 - Reference: https://www.yanh.org/2021/01/01/microbiome-r/
-- `NA`, `_sp.` to `_unclassified`
-- "uncultured" to "Genus_uncultured"  
 - filtering Unassigned, Chloroplast, Mitochondria, Archaea
 ```
+physeq <- subset_taxa(physeq, Kingdom %in% "Bacteria" ) 
+physeq <- subset_taxa(physeq, Order %!in%  "Chloroplast" ) 
+physeq <- subset_taxa(physeq, Family %!in%  "Mitochondria") 
 
+```
+- `NA`, `_sp.` to `_unclassified`
+- "uncultured" to "Genus_uncultured"  
+```
 
+tax_clean <- function(TAX){ 
+  # remove k_
+  TAX.clean <- data.frame(row.names = row.names(TAX),
+                          Kingdom = str_replace(TAX[,1], "d__",""),
+                          Phylum = str_replace(TAX[,2], "p__",""),
+                          Class = str_replace(TAX[,3], "c__",""),
+                          Order = str_replace(TAX[,4], "o__",""),
+                          Family = str_replace(TAX[,5], "f__",""),
+                          Genus = str_replace(TAX[,6], "g__",""),
+                          Species = str_replace(TAX[,7], "s__",""),
+                          stringsAsFactors = FALSE)
+  # replace NA to "" and other things
+  TAX.clean[TAX.clean=="-"] <- ""
+  TAX.clean[is.na(TAX.clean)] <- ""
+  TAX.clean[TAX.clean == "NA"] <- ""
+  
+  # Spcies to Genus Species
+  tax.clean <- TAX.clean
+  
+  for (i in 1:nrow(tax.clean)){
+    if (tax.clean[i,7] != ""){
+      tax.clean$Species[i] <- paste(# tax.clean$Genus[i], 
+        tax.clean$Species[i]# , sep = " "
+        )
+    } else if (tax.clean[i,2] == ""){
+      kingdom <- paste(tax.clean[i,1], "unclassified",  sep = "_")
+      tax.clean[i, 2:7] <- kingdom
+    } else if (tax.clean[i,3] == ""){
+      phylum <- paste(tax.clean[i,2], "unclassified", sep = "_")
+      tax.clean[i, 3:7] <- phylum
+    } else if (tax.clean[i,4] == ""){
+      class <- paste(tax.clean[i,3], "unclassified", sep = "_")
+      tax.clean[i, 4:7] <- class
+    } else if (tax.clean[i,5] == ""){
+      order <- paste(tax.clean[i,4], "unclassified", sep = "_")
+      tax.clean[i, 5:7] <- order
+    } else if (tax.clean[i,6] == ""){
+      family <- paste(tax.clean[i,5], "unclassified",  sep = "_")
+      tax.clean[i, 6:7] <- family
+    } else if (tax.clean[i,7] == ""){
+      tax.clean$Species[i] <- paste(tax.clean$Genus[i], "unclassified", sep = "_")
+    }
+  }
+
+  tax.clean$Species <- gsub("*_sp.", "_unclassified", tax.clean$Species)
+  
+  tax.clean[tax.clean$Species %in% "uncultured_bacterium", "Species"] <- NA
+  tax.clean[grepl("uncultured_", tax.clean$Species), "Species"] <- NA
+  tax.clean[is.na(tax.clean)] <- ""
+  
+    tax.clean2 <- tax.clean
+  
+  for (i in 1:nrow(tax.clean2)){
+    if (tax.clean2[i,7] != ""){
+      tax.clean2$Species[i] <- paste(tax.clean2$Species[i])
+    } else if (tax.clean2[i,2] == ""){
+      kingdom <- paste(tax.clean2[i,1], "uncultured",  sep = "_")
+      tax.clean2[i, 2:7] <- kingdom
+    } else if (tax.clean2[i,3] == ""){
+      phylum <- paste(tax.clean2[i,2], "uncultured", sep = "_")
+      tax.clean2[i, 3:7] <- phylum
+    } else if (tax.clean2[i,4] == ""){
+      class <- paste(tax.clean2[i,3], "uncultured", sep = "_")
+      tax.clean2[i, 4:7] <- class
+    } else if (tax.clean2[i,5] == ""){
+      order <- paste(tax.clean2[i,4], "uncultured", sep = "_")
+      tax.clean2[i, 5:7] <- order
+    } else if (tax.clean2[i,6] == ""){
+      family <- paste(tax.clean2[i,5], "uncultured",  sep = "_")
+      tax.clean2[i, 6:7] <- family
+    } else if (tax.clean2[i,7] == ""){
+      tax.clean2$Species[i] <- paste(tax.clean2$Genus[i], "uncultured", sep = "_")
+    }
+  }
+    
+      return(tax.clean2)
+}
+
+```
+
+```{r}
+tax <- data.frame(tax_table(physeq))
+tax.c <- tax_clean(tax)
+tax_table(physeq) <- tax_table(as.matrix(tax.c))
 ```
