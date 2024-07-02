@@ -8,21 +8,16 @@ devtools::install_github("KitHubb/HMPData")
 ```
   
   
-## Dataset
-1. HMP13
-- source: https://qiita.ucsd.edu/study/description/1927
-- samples: 3,530
-- object: Phyloseq
-- Methods: QIIME2(2024.02), DADA2(1.32.0), SILVA Database(138)
+## Input data
+1. HMP V1V3
+- Source: https://qiita.ucsd.edu/study/description/1927
+- Samples: 3,530
 
-    
-2. HMP35
-- source: https://qiita.ucsd.edu/study/description/1928
-- samples: 6,346
-- object: Phyloseq
-- Methods: QIIME2, DADA2, SILVA Database
-    
-## Data
+2. HMP V3V5
+- Source: https://qiita.ucsd.edu/study/description/1928
+- Samples: 6,346
+
+## Dataset
 1. `V13p5`
 - Using dada2-pyro
 - Truncate the read length to 500 and remove 20 bp from the forward
@@ -119,6 +114,12 @@ table(is.na(tax_table(V13s4)[,"Species"]))
 
 ```
 
+## Mathods
+- Tools
+  - QIIME2(v2024.02)
+  - DADA2(v1.32.0)
+  - phyloseq()
+  - SILVA Database(v138)
 
 ## Preprocessing
 #### 1) Prepare dataset
