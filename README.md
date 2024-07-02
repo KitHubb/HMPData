@@ -98,7 +98,7 @@ summary(sample_sums(V13s4))
 # 0     933    3549    3742    5285   70158 
 ```
 
-## Mathods
+## Methods
 - Tools
   - QIIME2(v2024.02)
   - DADA2(v1.32.0)
@@ -403,3 +403,8 @@ tax <- data.frame(tax_table(physeq))
 tax.c <- tax_clean(tax)
 tax_table(physeq) <- tax_table(as.matrix(tax.c))
 ```
+
+
+## Reference
+- Gonzalez A, Navas-Molina JA, Kosciolek T, et al. Qiita: rapid, web-enabled microbiome meta-analysis. Nat Methods. 2018;15(10):796-798. doi:10.1038/s41592-018-0141-9
+- McMurdie PJ, Holmes S. phyloseq: an R package for reproducible interactive analysis and graphics of microbiome census data. PLoS One. 2013;8(4):e61217. Published 2013 Apr 22. doi:10.1371/journal.pone.0061217
