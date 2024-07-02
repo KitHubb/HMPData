@@ -1,5 +1,5 @@
-정식 배포 XXX
 This package contains data analyzed using the DADA2 pipeline, derived from HMP data originally generated through pyrosequencing and OTU-based methods.
+
   
 ## Install
 ```
