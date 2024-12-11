@@ -18,7 +18,15 @@ devtools::install_github("KitHubb/HMPData")
 - Samples: 6,346
 
 
-## Dataset
+## Methods
+- Tools
+  - QIIME2(v2024.02)
+  - DADA2(v1.32.0)
+  - phyloseq(v1.48.0)
+  - Greengenes2 Database(2022.10)
+ 
+    
+## Output dataset
 1. `V13p5`
 - Using dada2-pyro plugin
 - Truncate the read length to 500 and remove 20 bp from the forward
@@ -97,13 +105,6 @@ summary(sample_sums(V13s4))
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 # 0     933    3549    3742    5285   70158 
 ```
-
-## Methods
-- Tools
-  - QIIME2(v2024.02)
-  - DADA2(v1.32.0)
-  - phyloseq(v1.48.0)
-  - SILVA Database(v138)
 
 ## Preprocessing
 #### 1) Prepare dataset
