@@ -10,12 +10,12 @@ devtools::install_github("KitHubb/HMPData")
   
 ## Input data
 1. HMP V1V3
-- Source: https://qiita.ucsd.edu/study/description/1927
-- Samples: 3,530
+  - Source: https://qiita.ucsd.edu/study/description/1927
+  - Samples: 3,530
 
 2. HMP V3V5
-- Source: https://qiita.ucsd.edu/study/description/1928
-- Samples: 6,346
+  - Source: https://qiita.ucsd.edu/study/description/1928
+  - Samples: 6,346
 
 
 ## Methods
@@ -30,12 +30,12 @@ devtools::install_github("KitHubb/HMPData")
    
 ## Output dataset
 1. `V13p5`
-- Using dada2-pyro plugin
-- Truncate the read length to 500 and remove 20 bp from the forward
+  - Using dada2-pyro plugin
+  - Truncate the read length to 500 and remove 20 bp from the forward
 
 1. `V35p5`
-- Using dada2-pyro plugin
-- Truncate the read length to 500 and remove 20 bp from the forward
+  - Using dada2-pyro plugin
+  - Truncate the read length to 500 and remove 20 bp from the forward
 
   
 ## Usage
