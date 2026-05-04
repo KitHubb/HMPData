@@ -19,13 +19,15 @@ devtools::install_github("KitHubb/HMPData")
 
 
 ## Methods
-- Tools
+- Tools & packages
   - QIIME2(v2024.02)
-  - DADA2(v1.32.0)
-  - phyloseq(v1.48.0)
-  - Greengenes2 Database(2022.10)
- 
-    
+  - DADA2(v1.32.0) - q2-plugin
+  - (R) phyloseq(v1.48.0)
+
+## Reference
+- Greengenes2 classifier (2022.10)
+
+   
 ## Output dataset
 1. `V13p5`
 - Using dada2-pyro plugin
