@@ -25,7 +25,7 @@ devtools::install_github("KitHubb/HMPData")
   - (R) phyloseq(v1.48.0)
 
 ## Reference
-- Greengenes2 classifier (2022.10)
+-SILVA 138.1 (RESCRIPt version)
 
    
 ## Output dataset
@@ -44,7 +44,7 @@ library(phyloseq)
 library(HMPData)
 
 data(‘V13p5’) # dada2-pyro, trunc-length 500
-data(‘V35p5’) # dada2-pyro, trunc-length 500
+data(‘V35p5’) # dada2-pyro, trunc-length 450
 ```
 
 
