@@ -30,15 +30,10 @@ devtools::install_github("KitHubb/HMPData")
 1. `V13p5`
 - Using dada2-pyro plugin
 - Truncate the read length to 500 and remove 20 bp from the forward
-2. `V13p4`
+
+1. `V35p5`
 - Using dada2-pyro plugin
-- Truncate the read length to 450 and remove 20 bp from the forward
-3. `V13s5`
-- Using dada2-single plugin
 - Truncate the read length to 500 and remove 20 bp from the forward
-4. `V13s4`
-- Using dada2-single plugin
-- Truncate the read length to 450 and remove 20 bp from the forward
 
   
 ## Usage
@@ -47,10 +42,9 @@ library(phyloseq)
 library(HMPData)
 
 data(‘V13p5’) # dada2-pyro, trunc-length 500
-data(‘V13p4’) # dada2-pyro, trunc-length 450
-data(‘V13s5’) # dada2-single, trunc-length 500
-data(‘V13s4’) # dada2-single, trunc-length 450
+data(‘V35p5’) # dada2-pyro, trunc-length 500
 ```
+
 
 ```
 V13p5
@@ -59,27 +53,6 @@ V13p5
 # sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
 # tax_table()   Taxonomy Table:    [ 52283 taxa by 7 taxonomic ranks ]
 # phy_tree()    Phylogenetic Tree: [ 52283 tips and 51732 internal nodes ]
-
-V13p4
-# phyloseq-class experiment-level object
-# otu_table()   OTU Table:         [ 26035 taxa and 3530 samples ]
-# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
-# tax_table()   Taxonomy Table:    [ 26035 taxa by 7 taxonomic ranks ]
-# phy_tree()    Phylogenetic Tree: [ 26035 tips and 25774 internal nodes ]
-
-V13s5
-# phyloseq-class experiment-level object
-# otu_table()   OTU Table:         [ 26754 taxa and 3530 samples ]
-# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
-# tax_table()   Taxonomy Table:    [ 26754 taxa by 7 taxonomic ranks ]
-# phy_tree()    Phylogenetic Tree: [ 26754 tips and 26612 internal nodes ]
-
-V13s4
-# phyloseq-class experiment-level object
-# otu_table()   OTU Table:         [ 53762 taxa and 3530 samples ]
-# sample_data() Sample Data:       [ 3530 samples by 36 sample variables ]
-# tax_table()   Taxonomy Table:    [ 53762 taxa by 7 taxonomic ranks ]
-# phy_tree()    Phylogenetic Tree: [ 53762 tips and 53073 internal nodes ]
 
 
 ```
@@ -93,17 +66,6 @@ summary(sample_sums(V13p5))
 # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 # 0.0   101.0   916.5  1385.1  1945.8 29071.0
 
-summary(sample_sums(V13p4))
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-# 0.0   945.5  3578.0  3779.7  5330.8 70684.0 
-
-summary(sample_sums(V13s5))
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-# 0.0   100.2   905.0  1362.7  1921.5 28891.0 
-
-summary(sample_sums(V13s4))
-# Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-# 0     933    3549    3742    5285   70158 
 ```
 
 ## Preprocessing
@@ -266,7 +228,7 @@ Denoising
 ```
 qiime dada2 denoise-pyro \
   --i-demultiplexed-seqs single-end-trimmed.qza \
-  --p-trunc-len 500 \#500 or 400
+  --p-trunc-len 500 \
   --p-trim-left 20 \
   --output-dir dada2-out
 ```
